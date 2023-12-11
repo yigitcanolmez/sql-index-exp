@@ -1,1 +1,9 @@
-# sql-index-exp
+# SQL Server: Index 
+Veritabanları milyonlarca kayıt içerebilir. Bu veriler arasından, belirli şartlarda verileri hatta veriyi bulmak, tabloadaki veriler rasgele sıralanmışsa çok zaman alabilir. Örneğin Trendyol, son zamanların en çok konuşalun ve kullanılan e-ticaret sitesi değil mi? Veri tabanında kaç milyon kayıt vardır kim bilir. Müşterilerden ismi 'Yi' ile başlayan kişilere kampanya tanımlanacağını düşünelim. Milyonluk kayıtlarda, isim başlangıcı 'Yi' ile başlayan kayıtları bulmak istersek, tablodaki tüm kayıtların tek tek taranması gerekir. Çok verimsiz, gereksiz yere veri tabanını kilitleyen bir işlem olur. 
+
+Index dediğimiz yapılar, bu sorunu çözmek için tasarlanmıştır. Bu yapılar, tablodaki verileri belirli bir sütun(CUSTOMER_NAME) veya sütunları sıralanmış bir biçimde tutar. Bize kolaylığı ne oluyor? Belirli bir veriyi bulamk için tablodaki tüm kayıtları taramak yerine, index taramamız yeterli olacaktır. Çok daha hızlı ve verimli bir işlem. Gerçek hayat örneği vererek konumuzu bir pekiştirelim, neden index ihtiyacımız var(:?
+
+Atatürk filmini izlemek için sinemaya gittiniz. Aldığınız bilet, Salon 6 koltuk E4 diyelim. Film saati yaklaşınca ne yapıyorsunuz? Salon 6'ya gidiyorsunuz, E bloğu buluyorsunuz ardından 4 numaralı koltuğu bulup oturuyorsunuz değil mi? Her salonun, bloğun koltuğun yeri belli, istediğinizi direkt olarak zorlanmadan bulabiliyorsunuz. Eğer bu bilgiler kapılarda, koltuklarda olmasaydı ne olurdu? Bir düşünün, tüm salonlara girip tek tek yer aramanız gerekecekti, sinir bozucu, şahsen vaktimin kaybolmasını istemem.
+
+Trendyol örneğimize geri dönelim, müşteri isimleri belirli bir sırayla sıralanmışlarsa 'Yi' ile başlayan isimleri bulmak kolaylaşır, belirli sıradan kastım ise harflere göre diyebiliriz. Tek harf için pek sorun teşkil etmez ama, iki harf için çok fazla kombinasyon doğuyor, çok karmaşık bir yapı olur buraya ilerleyen konularda değineceğim.
+
