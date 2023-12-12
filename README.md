@@ -52,3 +52,12 @@ on Person (Salary ASC); --IX prefix'i, index olduğunu belirtmek için kullanıl
 person tablosundaki salary kolonunu en küçükten en büyüğe olacak şekilde sıralatıyoruz.
 
 !!!!row information fotoğrafı koyulacka
+
+Index artık oluştu, peki ne yapacağız? Nereden gözlemleyeceğiz? Hepsi sırayla. Öncelikle sistem tarafından gelen bir Stored Procedure'müz mevcut, sp_Helpindex. Person tablosunda varolan, indexleri ve key değerlerini görmek için sp_Helpindex'i tetikliyoruz. Index keyden kastımız, index oluştururken belirttiğimiz kolondur, az önce oluşturduğumuz index'te Salary'di. Şimdi bunları görelim;
+
+```sql
+sp_Helpindex Person;
+```
+![image](https://github.com/yigitcanolmez/sql-index-exp/assets/90285509/b205305a-e34d-41ff-a073-82c58224d3c5)
+
+tetiklediğim anda yukarıdaki çıktı karşıma geldi. Index'e vermiş olduğum isim, key değeri ve description. Name ve key değerleri tamam bence ama description alanında 'nonclustered located on PRIMARY' yazıyor, ne anlama geliyor acaba? başka türleri var mı?
