@@ -47,9 +47,7 @@ Hadi o zaman ilk index'imizi oluşturalım.
 CREATE INDEX IX_Person_Salary
 on Person (Salary ASC); --IX prefix'i, index olduğunu belirtmek için kullanılmıştır.
 ```
-person tablosundaki salary kolonunu en küçükten en büyüğe olacak şekilde sıralatıyoruz.
-
-!!!!row information fotoğrafı koyulacka
+person tablosundaki salary kolonunu en küçükten en büyüğe olacak şekilde sıralatıyoruz.İlerleyen başlıklarda daha detaylı bir şekilde ele alacağız
 
 Peki bu index ile ne yapacağız? Nereden gözlemleyeceğiz? Hepsi sırayla. Öncelikle sistem tarafından gelen bir Stored Procedure'müz mevcut, sp_Helpindex. Person tablosunda varolan, indexleri ve key değerlerini görmek için sp_Helpindex'i tetikliyoruz. Index keyden kastımız, index oluştururken belirttiğimiz kolondur, az önce oluşturduğumuz index'te Salary'di. Şimdi bunları görelim;
 
@@ -76,7 +74,7 @@ Artık Person tablosunda herhangi bir index olmadığını bana söylüyor.
 
 # Clustered Index
 
-Bir tablodaki verileri fiziksel olarak nasıl saklandığını ve düzenlendiğini belirleyen bir index olarak geçmektedir. Bir tabloda clustered index yalnızca bir adet olabilir. Clustered index oluşunca, tablodaki tüm veriler bir sıraya konur. Fiziksel olarak bir düzenleme geçerli olduğu için, clustered index seçeceğimiz kolon; sorgularda en fazla kullanılan ve çok fazla değişiklik yapılmayan kolon olması performans açısından pozitif katkıda bulunuacaktır. Neden? Eğer yeni bir veri gelirse, fiziksel olarak yeniden sıralama durumu gerçekleşecektir.
+Bir tablodaki verileri fiziksel olarak nasıl saklandığını ve düzenlendiğini belirleyen bir index olarak geçmektedir.  Clustered index oluşunca, tablodaki tüm veriler bir sıraya konur. Fiziksel olarak bir düzenleme geçerli olduğu için, clustered index seçeceğimiz kolon; sorgularda en fazla kullanılan ve çok fazla değişiklik yapılmayan kolon olması performans açısından pozitif katkıda bulunuacaktır. Neden? Eğer yeni bir veri gelirse, fiziksel olarak yeniden sıralama durumu gerçekleşecektir.
 
 Önceki örneğimde kullandığım tüm tabloları dropladım, yeni tablo ve veriler üzerinden çalışacağım. Mockarro sitesinden mock dataları alacağım, bu site sayesinde istediğiniz kadar insert sorguları oluşturabiliyorsunuz. Kod örneklerini repo içerisinde zaten paylaşıyor olacağım.
 !!! link gelecek
@@ -106,3 +104,35 @@ INSERT INTO Person (id, first_name, last_name, email) VALUES (101, 'Alex', 'Souz
 ![image](https://github.com/yigitcanolmez/sql-index-exp/assets/90285509/eaeadaf7-de2f-4c09-bd45-089a10fff0d6)
 
 Attığım kayıt sonrasında, index yeniden düzenlendi ve fiziksel olarak yeniden sıralandı.
+
+Tablo oluştururken Id değerine primary key vermediğimi söylemiştim. Şimdi bu konuyu ele alalım, yeni bir tablo oluşturuyorum.
+
+```sql
+CREATE TABLE Student(
+id int primary key,
+first_name varchar(255)
+);
+```
+Hemen ardından ise 
+
+```sql
+sp_Helpindex Student;
+```
+
+tabloda herhangi bir index var mı yok mu kontrol ediyorum, derken?;
+
+![image](https://github.com/yigitcanolmez/sql-index-exp/assets/90285509/af32a91c-eeb5-4fd2-bdfa-14ebf240c1c4)
+
+index oluşmuş. Id kolonunu primary key olarak atadığım için clustered bir şekilde index tanımlamış. Ne anlama geliyor?
+Id değeri küçükten büyüğe olacak şekilde sıralanacaktır. Sırayla insert atıyorum ve kontrol ediyorum.
+
+![image](https://github.com/yigitcanolmez/sql-index-exp/assets/90285509/65c5825b-2e1a-4c44-8c66-5deb0a315a6b)
+
+Id değerine göre fiziksel olarak sıralandığını görüyorum.
+
+Kısa bir özet geçelim;
+* Sorgu performansım iyileşti, fiziksel olarak sıralanan verilerden hızlıca aradıklarımı bulabildim. Veriler daha kolay erişilebilir hale gelmiş oldu.
+* Dezavantajımız da var tabloya gelecek olan güncellemeler yavaşlayabilir. Veri güncellenmesi veya eklenmesi ardından, verilerin fiziksel olarak yeniden sıralanması gerekmektedir. Bu işlemler haliyle, güncelleme işlemlerini yavaşlatabilir.
+
+# NonClustered Index
+
