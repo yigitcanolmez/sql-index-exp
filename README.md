@@ -5,8 +5,6 @@ Index dediğimiz yapılar, bu sorunu çözmek için tasarlanmıştır. Bu yapıl
 
 Atatürk filmini izlemek için sinemaya gittiniz. Aldığınız bilet, Salon 6 koltuk E4 diyelim. Film saati yaklaşınca ne yapıyorsunuz? Salon 6'ya gidiyorsunuz, E bloğu buluyorsunuz ardından 4 numaralı koltuğu bulup oturuyorsunuz değil mi? Her salonun, bloğun koltuğun yeri belli, istediğinizi direkt olarak zorlanmadan bulabiliyorsunuz. Eğer bu bilgiler kapılarda, koltuklarda olmasaydı ne olurdu? Bir düşünün, tüm salonlara girip tek tek yer aramanız gerekecekti, sinir bozucu, şahsen vaktimin kaybolmasını istemem.
 
-Trendyol örneğimize geri dönelim, müşteri isimleri belirli bir sırayla sıralanmışlarsa 'Yi' ile başlayan isimleri bulmak kolaylaşır, belirli sıradan kastım ise harflere göre diyebiliriz. Tek harf için pek sorun teşkil etmez ama, iki harf için çok fazla kombinasyon doğuyor, çok karmaşık bir yapı olur buraya ilerleyen konularda değineceğim.
-
 Uygulamalı örneklere başlayalım; bir adet tablo oluşturalım.
 
 ```sql
@@ -78,4 +76,33 @@ Artık Person tablosunda herhangi bir index olmadığını bana söylüyor.
 
 # Clustered Index
 
-Bir tablodaki verileri fiziksel olarak nasıl saklandığını ve düzenlendiğini belirleyen bir index olarak geçmektedir. Bir tabloda clustered index yalnızca bir adet olabilir. Clustered index oluşunca, tablodaki tüm veriler bir sıraya konur.
+Bir tablodaki verileri fiziksel olarak nasıl saklandığını ve düzenlendiğini belirleyen bir index olarak geçmektedir. Bir tabloda clustered index yalnızca bir adet olabilir. Clustered index oluşunca, tablodaki tüm veriler bir sıraya konur. Fiziksel olarak bir düzenleme geçerli olduğu için, clustered index seçeceğimiz kolon; sorgularda en fazla kullanılan ve çok fazla değişiklik yapılmayan kolon olması performans açısından pozitif katkıda bulunuacaktır. Neden? Eğer yeni bir veri gelirse, fiziksel olarak yeniden sıralama durumu gerçekleşecektir.
+
+Önceki örneğimde kullandığım tüm tabloları dropladım, yeni tablo ve veriler üzerinden çalışacağım. Mockarro sitesinden mock dataları alacağım, bu site sayesinde istediğiniz kadar insert sorguları oluşturabiliyorsunuz. Kod örneklerini repo içerisinde zaten paylaşıyor olacağım.
+!!! link gelecek
+
+Tablo oluşturup içerisine mock datalarımı insert ediyorum.
+
+![image](https://github.com/yigitcanolmez/sql-index-exp/assets/90285509/57ef8d8f-9e24-45f0-af0e-ce8313ec0d2b)
+
+Yukarıdaki resimden görebileceğiniz gibi tablomda 100 adet kayıt var. Kayıtlar üzerinde herhangi bir sıralama mevcut değil, id kısmında olan sıralama, insert sorgularını sıralı olarak 1'den 100'e kadar çalıştırmamdan kaynaklı.
+
+Şimdi person tablosu üzerinde bir clustered index oluşturalım ve bakalım gerçekten veriler fiziksel olarak sıralanıyor mu? Email değeri üzerinde oluşturacağım.
+
+```sql
+CREATE CLUSTERED INDEX IX_CLUSTERED_PERSON_EMAIL
+ON PERSON (email);
+```
+
+Hemen select atıyorum vee;
+
+![image](https://github.com/yigitcanolmez/sql-index-exp/assets/90285509/2c96b0aa-3964-485d-bbee-29db1145149c)
+
+emailler a'dan z'ye olacak şekilde sıralanmış. Gerçektende fiziksel olarak sıralama işlemi gerçekleşiyormuş. Peki yeni kayıt gelince ne oluyor?
+
+```sql
+INSERT INTO Person (id, first_name, last_name, email) VALUES (101, 'Alex', 'Souza', 'alex10souza@outlook.com');
+```
+![image](https://github.com/yigitcanolmez/sql-index-exp/assets/90285509/eaeadaf7-de2f-4c09-bd45-089a10fff0d6)
+
+Attığım kayıt sonrasında, index yeniden düzenlendi ve fiziksel olarak yeniden sıralandı.
