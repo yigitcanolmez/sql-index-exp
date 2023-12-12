@@ -7,3 +7,48 @@ Atatürk filmini izlemek için sinemaya gittiniz. Aldığınız bilet, Salon 6 k
 
 Trendyol örneğimize geri dönelim, müşteri isimleri belirli bir sırayla sıralanmışlarsa 'Yi' ile başlayan isimleri bulmak kolaylaşır, belirli sıradan kastım ise harflere göre diyebiliriz. Tek harf için pek sorun teşkil etmez ama, iki harf için çok fazla kombinasyon doğuyor, çok karmaşık bir yapı olur buraya ilerleyen konularda değineceğim.
 
+Uygulamalı örneklere başlayalım; bir adet tablo oluşturalım.
+
+```sql
+
+-- TABLO OLUŞTURMA
+
+CREATE TABLE Person(
+Id int,-- tabi normalde int olarak tutulmaz ama örnek olduğu için int ile ilerliyorum
+FirstName varchar(255),
+LastName varchar(255),
+Salary int --tam sayı olarak almak istediğim için integer verdim.
+);
+
+SELECT * FROM Person; --tablonun oluştuğunu görelim
+
+--şimdide içerisine kayıt atalım
+
+INSERT INTO Person (Id, FirstName, LastName, Salary) VALUES (1, 'Yiğitcan', 'Ölmez', '1907');
+INSERT INTO Person (Id, FirstName, LastName, Salary) VALUES (2, 'Mert', 'Ölmez', '2800');
+INSERT INTO Person (Id, FirstName, LastName, Salary) VALUES (3, 'Edin','Dzeko', '3200');
+INSERT INTO Person (Id, FirstName, LastName, Salary) VALUES (4, 'Sebastian', 'Szymanski', '2700');
+INSERT INTO Person (Id, FirstName, LastName, Salary) VALUES (5, 'Dusan', 'Tadic', '5500');
+INSERT INTO Person (Id, FirstName, LastName, Salary) VALUES (6, 'Dominik', 'Livakovic', '4000');
+INSERT INTO Person (Id, FirstName, LastName, Salary) VALUES (7, 'Fred', 'Rodrigues', '3870');
+
+-- atılan kayıtları görelim
+SELECT * FROM Person;
+```
+Oluşturmuş olduğumuz tabloda herhangi bir index şuanlık bulunmamaktadır. Salary kolonuna bakarsanız zaten verilerin rastgele bir şekilde sıralanmış olduğunu anlayabilirsiniz. 
+Şimdiki amacım, maaşı 2500 ile 3500 arasında olan kişileri bulmak. Hemen select sorgumu yazıyorum.
+
+```sql
+SELECT * FROM Person p WHERE Salary BETWEEN 2500 AND 3500;
+```
+Bu sorgu ile ben, tüm kayıtları dolaşarak, Salary değeri 2500 ve 3500 aralığında olan kayıtları direkt olarak getirdim. Az veri ile çalıştığımız için herhangi bir performans sorunu yaşamadık ama, milyonluk ve aktif olarak kullanılan bir tabloya böyle bir istek atarsanız sistemi yorar cevabın gelmesi uzun sürer.
+
+Hadi o zaman ilk index'imizi oluşturalım.
+
+```sql
+CREATE INDEX IX_Person_Salary
+on Person (Salary ASC); --IX prefix'i, index olduğunu belirtmek için kullanılmıştır.
+```
+person tablosundaki salary kolonunu en küçükten en büyüğe olacak şekilde sıralatıyoruz.
+
+!!!!row information fotoğrafı koyulacka
