@@ -53,11 +53,29 @@ person tablosundaki salary kolonunu en küçükten en büyüğe olacak şekilde 
 
 !!!!row information fotoğrafı koyulacka
 
-Index artık oluştu, peki ne yapacağız? Nereden gözlemleyeceğiz? Hepsi sırayla. Öncelikle sistem tarafından gelen bir Stored Procedure'müz mevcut, sp_Helpindex. Person tablosunda varolan, indexleri ve key değerlerini görmek için sp_Helpindex'i tetikliyoruz. Index keyden kastımız, index oluştururken belirttiğimiz kolondur, az önce oluşturduğumuz index'te Salary'di. Şimdi bunları görelim;
+Peki bu index ile ne yapacağız? Nereden gözlemleyeceğiz? Hepsi sırayla. Öncelikle sistem tarafından gelen bir Stored Procedure'müz mevcut, sp_Helpindex. Person tablosunda varolan, indexleri ve key değerlerini görmek için sp_Helpindex'i tetikliyoruz. Index keyden kastımız, index oluştururken belirttiğimiz kolondur, az önce oluşturduğumuz index'te Salary'di. Şimdi bunları görelim;
 
 ```sql
 sp_Helpindex Person;
 ```
 ![image](https://github.com/yigitcanolmez/sql-index-exp/assets/90285509/b205305a-e34d-41ff-a073-82c58224d3c5)
 
-tetiklediğim anda yukarıdaki çıktı karşıma geldi. Index'e vermiş olduğum isim, key değeri ve description. Name ve key değerleri tamam bence ama description alanında 'nonclustered located on PRIMARY' yazıyor, ne anlama geliyor acaba? başka türleri var mı?
+tetiklediğim anda yukarıdaki çıktı karşıma geldi. Index'e vermiş olduğum isim, key değeri ve description. Name ve key değerleri tamam bence ama description alanında 'nonclustered located on PRIMARY' yazıyor, ne anlama geliyor acaba? başka türleri var mı? Ama önce bir index silme işlemi yapalım. 
+
+Eğer hatalı oluşturma gerçekleştiyse, index silebiliyoruz. Index oluşturduğunuz tablo ve index ismini yazarak, drop işlemini gerçekleştirebilirsiniz.
+
+```sql
+DROP INDEX Person.IX_Person_Salary;
+```
+![image](https://github.com/yigitcanolmez/sql-index-exp/assets/90285509/4fecdd6a-98d4-4581-b431-0c8703240687)
+
+query çalıştıktan sonra sistem tarafından hazırlanan SP'yi tekrardan tetikliyorum.
+
+![image](https://github.com/yigitcanolmez/sql-index-exp/assets/90285509/33ee1056-49a1-4562-9efa-6acacd471d1c)
+
+Artık Person tablosunda herhangi bir index olmadığını bana söylüyor.
+
+
+# Clustered Index
+
+Bir tablodaki verileri fiziksel olarak nasıl saklandığını ve düzenlendiğini belirleyen bir index olarak geçmektedir. Bir tabloda clustered index yalnızca bir adet olabilir. Clustered index oluşunca, tablodaki tüm veriler bir sıraya konur.
