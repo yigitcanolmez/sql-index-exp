@@ -135,4 +135,25 @@ Kısa bir özet geçelim;
 * Dezavantajımız da var tabloya gelecek olan güncellemeler yavaşlayabilir. Veri güncellenmesi veya eklenmesi ardından, verilerin fiziksel olarak yeniden sıralanması gerekmektedir. Bu işlemler haliyle, güncelleme işlemlerini yavaşlatabilir.
 
 # NonClustered Index
+Non-clustered, clustered'ın aksine verileri fiziksel olarak sıralamak yerine, mantıksal olarak sıralar. 
+
+![image](https://github.com/yigitcanolmez/sql-index-exp/assets/90285509/98c49232-4ed4-4324-8b2e-9dc123455dab)
+
+Non clustered index'e eklenen kolonlar, tablodan bağımsız olarak diskte ayrı bir şekilde tutulur. Haliyle ekstra yer kaplarlar. Tabloda çok fazla non-clustered index varsa, her ekleme,silme, güncelleme işleminde tablonun haricinde bu tablodaki bütün non clustered index’lere de uygulanacağı için ekleme,silme, güncelleme performansı yavaşlayacaktır.
+
+Person tablom üzerindne devam ediyorum. Eklediğim indexleri siliyorum, index olmadığına emin oluyorum. Ardından non-clustered index oluşturma işlemine geçiyorum.
+
+```sql
+CREATE NONCLUSTERED INDEX IX_PERSON_EMAIL ON Person (email DESC);
+```
+
+Person tablosunun, email alanında Z'den A'ya olacak şekilde bir sıralama gerçekleştirmesini istedim. Hemen bir select atalım.
+
+![image](https://github.com/yigitcanolmez/sql-index-exp/assets/90285509/cfe81c98-c2ab-4737-a202-a78cfc6a8812)
+
+Fiziksel olarak herhangi bir değişiklik olmadı. Peki non-clustered bize ne sağladı? 
+
+![image](https://github.com/yigitcanolmez/sql-index-exp/assets/90285509/d51301f2-8928-48b5-8f22-d1f5ec6dd0f3)
+
+Yukarıdaki resimde görebileceğiniz bir mantık var, 95 sayısını ele alalım. 1-200 aralığını tutan bir Root Node mevcut. Bu Node değerlerini takip ederek, ilgili dataya ulaşmaktadır. Verileri küçük parçalara ayırdık, veri arama işlemlerini hızlandırdık.
 
