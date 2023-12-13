@@ -6,7 +6,7 @@ Index dediğimiz yapılar, bu sorunu çözmek için tasarlanmıştır. Bu yapıl
 Atatürk filmini izlemek için sinemaya gittiniz. Aldığınız bilet, Salon 6 koltuk E4 diyelim. Film saati yaklaşınca ne yapıyorsunuz? Salon 6'ya gidiyorsunuz, E bloğu buluyorsunuz ardından 4 numaralı koltuğu bulup oturuyorsunuz değil mi? Her salonun, bloğun koltuğun yeri belli, istediğinizi direkt olarak zorlanmadan bulabiliyorsunuz. Eğer bu bilgiler kapılarda, koltuklarda olmasaydı ne olurdu? Bir düşünün, tüm salonlara girip tek tek yer aramanız gerekecekti, sinir bozucu, şahsen vaktimin kaybolmasını istemem.
 
 Uygulamalı örneklere başlayalım; bir adet tablo oluşturalım.
-
+[Sql Kodları](https://github.com/yigitcanolmez/sql-index-exp/blob/main/Index.sql)
 ```sql
 
 -- TABLO OLUŞTURMA
@@ -77,7 +77,8 @@ Artık Person tablosunda herhangi bir index olmadığını bana söylüyor.
 Bir tablodaki verileri fiziksel olarak nasıl saklandığını ve düzenlendiğini belirleyen bir index olarak geçmektedir.  Clustered index oluşunca, tablodaki tüm veriler bir sıraya konur. Fiziksel olarak bir düzenleme geçerli olduğu için, clustered index seçeceğimiz kolon; sorgularda en fazla kullanılan ve çok fazla değişiklik yapılmayan kolon olması performans açısından pozitif katkıda bulunuacaktır. Neden? Eğer yeni bir veri gelirse, fiziksel olarak yeniden sıralama durumu gerçekleşecektir.
 
 Önceki örneğimde kullandığım tüm tabloları dropladım, yeni tablo ve veriler üzerinden çalışacağım. Mockarro sitesinden mock dataları alacağım, bu site sayesinde istediğiniz kadar insert sorguları oluşturabiliyorsunuz. Kod örneklerini repo içerisinde zaten paylaşıyor olacağım.
-!!! link gelecek
+
+[Sql Kodları](https://github.com/yigitcanolmez/sql-index-exp/blob/main/ClusturedIndex.sql)
 
 Tablo oluşturup içerisine mock datalarımı insert ediyorum.
 
@@ -142,6 +143,8 @@ Non-clustered, clustered'ın aksine verileri fiziksel olarak sıralamak yerine, 
 Non clustered index'e eklenen kolonlar, tablodan bağımsız olarak diskte ayrı bir şekilde tutulur. Haliyle ekstra yer kaplarlar. Tabloda çok fazla non-clustered index varsa, her ekleme,silme, güncelleme işleminde tablonun haricinde bu tablodaki bütün non clustered index’lere de uygulanacağı için ekleme,silme, güncelleme performansı yavaşlayacaktır.
 
 Person tablom üzerindne devam ediyorum. Eklediğim indexleri siliyorum, index olmadığına emin oluyorum. Ardından non-clustered index oluşturma işlemine geçiyorum.
+
+[Sql Kodları](https://github.com/yigitcanolmez/sql-index-exp/blob/main/non-clustered-index.sql)
 
 ```sql
 CREATE NONCLUSTERED INDEX IX_PERSON_EMAIL ON Person (email DESC);
